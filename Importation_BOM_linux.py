@@ -10,7 +10,9 @@ Todo :
 import csv
 import psycopg2
 import sys
+import datetime
 
+time = datetime.datetime.now()
 conn_string = "dbname='bitnami_openerp' user='bn_openerp' password='08de99d3' host='127.0.0.1'"
 conn = psycopg2.connect(conn_string)
 
@@ -22,7 +24,7 @@ with open('products.csv', 'r') as f:
         print (row[1])
     
         #import routine
-        statement = "INSERT INTO product_template(name,warranty,list_price,mes_type,weight,write_uid,uos_coeff,create_uid,company_id,uom_id,uom_po_id,type,weight_net,volume,active,rental,track_all,track_outgoing,track_incoming,sale_delay,track_production,produce_delay,categ_id,sale_ok) VALUES ('"+ row[1] + "',0," + str(row[2])  +",'fixed',0.00,1,1.000,1,1,1,1,'product',0.00,0,TRUE,FALSE,FALSE,FALSE,FALSE,7,FALSE,1,1,True) RETURNING id"
+        statement = "INSERT INTO product_template(name,warranty,list_price,mes_type,weight,write_uid,uos_coeff,create_uid,company_id,uom_id,uom_po_id,type,weight_net,volume,active,rental,track_all,track_outgoing,track_incoming,sale_delay,track_production,produce_delay,categ_id,sale_ok,create_date,write_date) VALUES ('"+ row[1] + "',0," + str(row[2])  +",'fixed',0.00,1,1.000,1,1,1,1,'product',0.00,0,TRUE,FALSE,FALSE,FALSE,FALSE,7,FALSE,1,1,True,'"+str(time)+"','"+str(time)+"') RETURNING id"
 
         cursor.execute(statement)
         conn.commit()
