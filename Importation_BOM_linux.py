@@ -2,7 +2,6 @@
 """
 Todo :
 	- Add the supplier and manufacturer references & id
-	x- Import from an external file the connection string
 	- Check if name or suppliers or manufacturer references are not allready existing + alert message if yes 
 """
 
@@ -11,7 +10,7 @@ import psycopg2
 import sys
 import datetime
 
-
+#Giving a timestamp to imported products
 time = datetime.datetime.now()
 
 #Login to server using an external file called "login"
@@ -21,7 +20,6 @@ conn_string = myfile . read ()
 print(conn_string)
 myfile . close ()
 
-#conn_string = "dbname='bitnami_openerp' user='bn_openerp' password='08de99d3' host='127.0.0.1'"
 conn = psycopg2.connect(conn_string)
 
 cursor = conn.cursor()
