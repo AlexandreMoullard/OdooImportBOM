@@ -1,9 +1,8 @@
 #Importation of a product in the database
 """
 Todo :
-	- Add the date of creation of each line (in the database table)
 	- Add the supplier and manufacturer references & id
-	- Import from an external file the connection string
+	x- Import from an external file the connection string
 	- Check if name or suppliers or manufacturer references are not allready existing + alert message if yes 
 """
 
@@ -12,8 +11,17 @@ import psycopg2
 import sys
 import datetime
 
+
 time = datetime.datetime.now()
-conn_string = "dbname='bitnami_openerp' user='bn_openerp' password='08de99d3' host='127.0.0.1'"
+
+#Login to server using an external file called "login"
+#This file has to contain:"dbname='xxx' user='xxx' password='xxx' host='xxx'" (replace xxx with correct values)
+myfile = open ("login", "r")
+conn_string = myfile . read ()
+print(conn_string)
+myfile . close ()
+
+#conn_string = "dbname='bitnami_openerp' user='bn_openerp' password='08de99d3' host='127.0.0.1'"
 conn = psycopg2.connect(conn_string)
 
 cursor = conn.cursor()
