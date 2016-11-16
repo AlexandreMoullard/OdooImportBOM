@@ -1,4 +1,13 @@
 #Importation of a product in the database
+
+#Template imported in database:
+#row[0] seller's product name  
+#row[1] name of the product (intern)
+#row[2] price of the product
+#row[3] seller's name
+#row[4] seller's product code
+#Create a new line for each seller, keep the same name
+
 """
 Todo :
 	- Add the supplier and manufacturer references & id
@@ -25,7 +34,7 @@ conn = psycopg2.connect(conn_string)
 cursor = conn.cursor()
 
 with open('products.csv', 'r') as f:
-    reader = csv.reader(f, delimiter=';')
+    reader = csv.reader(f, delimiter=',')
     for row in reader :
         print (row[1])
     
@@ -35,13 +44,18 @@ with open('products.csv', 'r') as f:
         cursor.execute(statement)
         conn.commit()
         templateid = cursor.fetchone()[0]
+	print(templateid)
 
-	#import routine product_supplierinfo -> to be completed
-	statement = "INSERT INTO product_supplierinfo(create_uid,product_code,create_date,name,sequence,product_name,company_id,write_id,delay,write_date,min_qty,qty,product_tmpl_id) VALUES (1,,'"+ str(time) +"',,1,,1,1,1,'"+ str(time) +"',0,0.00,)"
+	#import routine product_supplierinfo
+	#retrieves the supplier id
+	cursor.execute("SELECT id FROM res_partner WHERE name='"+ row[3] +"'")
+	supplierid = cursor.fetchone()[0]
+	print(supplierid)
+
+	statement = "INSERT INTO product_supplierinfo(create_uid,product_code,create_date,name,sequence,product_name,company_id,write_uid,delay,write_date,min_qty,qty,product_tmpl_id) VALUES (1,'"+ row[4] +"','"+ str(time) +"','"+ str(supplierid) +"',1,'"+ row[0] + "',1,1,1,'"+ str(time) +"',0,0.00,'"+ str(templateid) +"')"
 
         cursor.execute(statement)
         conn.commit()
-        templateid = cursor.fetchone()[0]
     
 	#import routine product_product -> issue, has to be corrected
 	#replace by  (create_date,name_template,create_uid,product_tmpl_id,write_uid,write_date,active)        
