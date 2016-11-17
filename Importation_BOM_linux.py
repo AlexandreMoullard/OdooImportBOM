@@ -10,7 +10,6 @@
 
 """
 Todo :
-	- Add the supplier and manufacturer references & id
 	- Check if name or suppliers or manufacturer references are not allready existing + alert message if yes 
 """
 
@@ -47,7 +46,7 @@ with open('products.csv', 'r') as f:
 	print(templateid)
 
 	#import routine product_supplierinfo
-	#retrieves the supplier id
+	#finds the supplier id first
 	cursor.execute("SELECT id FROM res_partner WHERE name='"+ row[3] +"'")
 	supplierid = cursor.fetchone()[0]
 	print(supplierid)
@@ -57,10 +56,8 @@ with open('products.csv', 'r') as f:
         cursor.execute(statement)
         conn.commit()
     
-	#import routine product_product -> issue, has to be corrected
-	#replace by  (create_date,name_template,create_uid,product_tmpl_id,write_uid,write_date,active)        
-	statement = "INSERT INTO product_product (product_tmpl_id,default_code,active) VALUES \
-        (" + str(templateid) + ",'" + row[0] + "',TRUE)"
+	#import routine product_product         
+	statement = "INSERT INTO product_product (create_date,name_template,create_uid,product_tmpl_id,write_uid,write_date,active) VALUES ('"+ str(time) +"','" + row[1] + "',1,'" + str(templateid) + "',1,'"+ str(time) +"',TRUE)"
     
         cursor.execute(statement)
         conn.commit()
